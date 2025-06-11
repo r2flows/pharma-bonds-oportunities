@@ -956,48 +956,48 @@ try:
                                     
                                     # Gráficos adicionales
                                     if len(df_productos_filtrado) > 0:
-                                        col1, col2 = st.columns(2)
+                                        #col1, col2 = st.columns(2)
                                         
-                                        with col1:
+                                        #with col1:
                                             # Distribución de ahorro por tipo
-                                            tipo_ahorro_dist = df_productos_filtrado.groupby('Tipo Ahorro')['Ahorro con Mejor Vendor'].sum().reset_index()
-                                            fig_tipo = px.pie(
-                                                tipo_ahorro_dist,
-                                                values='Ahorro con Mejor Vendor',
-                                                names='Tipo Ahorro',
-                                                title='Distribución de Ahorro por Tipo'
-                                            )
-                                            st.plotly_chart(fig_tipo, use_container_width=True)
-                                        
-                                        with col2:
-                                            # Top productos con mayor ahorro
-                                            top_productos = df_productos_filtrado.head(10)
-                                            fig_productos = px.bar(
-                                                top_productos,
-                                                x='Producto ID',
-                                                y='Ahorro con Mejor Vendor',
-                                                color='Tipo Ahorro',
-                                                title='Top 10 Productos con Mayor Ahorro'
-                                            )
-                                            fig_productos.update_layout(xaxis_tickangle=-45)
-                                            st.plotly_chart(fig_productos, use_container_width=True)
-                                        
-                                        # Resumen por vendor más frecuente como mejor opción
-                                        st.subheader("Vendors que Aparecen Más Frecuentemente como Mejor Opción")
-                                        vendor_frecuencia = df_productos_filtrado.groupby(['Mejor Vendor ID', 'Status Mejor Vendor']).agg({
-                                            'Producto ID': 'count',
-                                            'Ahorro con Mejor Vendor': ['sum', 'mean']
-                                        }).round(2)
-                                        
-                                        vendor_frecuencia.columns = ['Productos Como Mejor Opción', 'Ahorro Total', 'Ahorro Promedio']
-                                        vendor_frecuencia = vendor_frecuencia.reset_index().sort_values('Ahorro Total', ascending=False)
-                                        
-                                        st.dataframe(
-                                            vendor_frecuencia.style.format({
-                                                'Ahorro Total': '${:,.2f}',
-                                                'Ahorro Promedio': '${:,.2f}'
-                                            })
+                                        tipo_ahorro_dist = df_productos_filtrado.groupby('Tipo Ahorro')['Ahorro con Mejor Vendor'].sum().reset_index()
+                                        fig_tipo = px.pie(
+                                            tipo_ahorro_dist,
+                                            values='Ahorro con Mejor Vendor',
+                                            names='Tipo Ahorro',
+                                            title='Distribución de Ahorro por Tipo'
                                         )
+                                        st.plotly_chart(fig_tipo, use_container_width=True)
+                                    
+                                    #with col2:
+                                        # Top productos con mayor ahorro
+                                        #   top_productos = df_productos_filtrado.head(10)
+                                        #  fig_productos = px.bar(
+                                        #     top_productos,
+                                        #    x='Producto ID',
+                                            #   y='Ahorro con Mejor Vendor',
+                                            #  color='Tipo Ahorro',
+                                            # title='Top 10 Productos con Mayor Ahorro'
+                                        #)
+                                        #fig_productos.update_layout(xaxis_tickangle=-45)
+                                        #st.plotly_chart(fig_productos, use_container_width=True)
+                                    
+                                    # Resumen por vendor más frecuente como mejor opción
+                                    st.subheader("Vendors que Aparecen Más Frecuentemente como Mejor Opción")
+                                    vendor_frecuencia = df_productos_filtrado.groupby(['Mejor Vendor ID', 'Status Mejor Vendor']).agg({
+                                        'Producto ID': 'count',
+                                        'Ahorro con Mejor Vendor': ['sum', 'mean']
+                                    }).round(2)
+                                    
+                                    vendor_frecuencia.columns = ['Productos Como Mejor Opción', 'Ahorro Total', 'Ahorro Promedio']
+                                    vendor_frecuencia = vendor_frecuencia.reset_index().sort_values('Ahorro Total', ascending=False)
+                                    
+                                    st.dataframe(
+                                        vendor_frecuencia.style.format({
+                                            'Ahorro Total': '${:,.2f}',
+                                            'Ahorro Promedio': '${:,.2f}'
+                                        })
+                                    )
                                 else:
                                     st.warning("No se pudieron generar análisis de productos.")
                             else:
